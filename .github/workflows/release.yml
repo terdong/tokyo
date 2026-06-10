@@ -80,4 +80,6 @@ jobs:
           files: |
             jvm/target/scala-*/*.jar
             js/target/scala-*/*.jar
+            testkit/jvm/target/scala-*/*.jar
+            testkit/js/target/scala-*/*.jar
           generate_release_notes: true

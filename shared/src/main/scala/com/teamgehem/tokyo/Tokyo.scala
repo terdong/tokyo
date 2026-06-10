@@ -263,6 +263,8 @@ extension [E, A](result: Result[E, A])
     case Result.Panic(ex)  => throw ex
 
 
+
+
 // --- E. Practical Usage Examples ---
 
 /**

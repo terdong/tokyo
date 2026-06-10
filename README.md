@@ -24,10 +24,16 @@ Then, add the library dependency to your `build.sbt`:
 
 ```scala
 // For JVM-only projects
-libraryDependencies += "com.github.terdong.tokyo" %% "tokyo" % "0.1.0"
+libraryDependencies ++= Seq(
+  "com.github.terdong.tokyo" %% "tokyo" % "0.1.1",
+  "com.github.terdong.tokyo" %% "tokyo-testkit" % "0.1.1" % Test
+)
 
 // For Scala.js or cross-platform/shared projects
-libraryDependencies += "com.github.terdong.tokyo" %%% "tokyo" % "0.1.0"
+libraryDependencies ++= Seq(
+  "com.github.terdong.tokyo" %%% "tokyo" % "0.1.1",
+  "com.github.terdong.tokyo" %%% "tokyo-testkit" % "0.1.1" % Test
+)
 ```
 
 *Note: This library is experimental and has strict version compatibility requirements. It is compatible with **Scala 3.8.4 and newer** (compiled with Scala 3.8.4). This constraint exists to align with **Kyo 1.0.0-RC2** (which is compiled against Scala 3.8.3). Due to tracking these bleeding-edge releases, older Scala 3 versions are not supported.*
@@ -137,8 +143,9 @@ val runQueryWithLayer: String < (IO & Memo) =
   queryEffect.provideLayer(dbLayer)
 ```
 
-### 4. Testing Utilities (`Result`)
+### 4. Testing Utilities (`Result` & `TestKyoExtensions`)
 
+#### 4-1. Result to Either Conversion
 Bridge `Result` to standard `Either` for easier assertions in tests:
 
 ```scala
@@ -147,6 +154,31 @@ import com.teamgehem.tokyo.*
 
 val result: Result[String, Int] = Result.Success(42)
 val either: Either[String, Int] = result.toEither // Right(42)
+```
+
+#### 4-2. Synchronous & Asynchronous Kyo Test Runners
+If you depend on `tokyo-testkit`, you can import `TestKyoExtensions` to run Kyo programs synchronously or asynchronously (returning a Scala `Future`) in your tests. This is fully cross-platform and works on both JVM and Scala.js:
+
+```scala
+import kyo.*
+import com.teamgehem.tokyo.testkit.TestKyoExtensions.*
+import scala.concurrent.Future
+
+// 1. runSync: For synchronous programs that can fail with Abort[E] (returns Either[E | Throwable, A])
+val program: Int < Abort[String] = Abort.fail("error")
+val result = program.runSync // Left("error")
+
+// 2. runSyncPure: For synchronous programs that cannot fail with Abort (returns A directly)
+val pureProgram: Int < Any = 42
+val pureResult = pureProgram.runSyncPure // 42
+
+// 3. runAsync: For asynchronous programs that can fail with Abort[E] (returns Future[Either[E | Throwable, A]])
+val asyncProgram: Int < (Abort[String] & Async) = ...
+val asyncResult: Future[Either[String | Throwable, Int]] = asyncProgram.runAsync
+
+// 4. runAsyncPure: For asynchronous programs that cannot fail with Abort (returns Future[A])
+val pureAsyncProgram: Int < Async = ...
+val pureAsyncResult: Future[Int] = pureAsyncProgram.runAsyncPure
 ```
 
 ## License
