@@ -45,7 +45,8 @@ class TokyoSpec extends FunSuite {
   test("tapError - Failure path") {
     var sideEffectValue: Option[String] = None
     val effect: Int < Abort[String] = Abort.fail("error")
-    val tapped = effect.tapError(err => Sync.defer { sideEffectValue = Some(err) })
+    val tapped =
+      effect.tapError(err => Sync.defer { sideEffectValue = Some(err) })
 
     val result: Result[String, Int] = Sync.Unsafe.evalOrThrow(Abort.run(tapped))
     assertEquals(result, Result.Failure("error"))
