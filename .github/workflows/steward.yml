@@ -1,0 +1,21 @@
+name: Scala Steward
+on:
+  workflow_dispatch: # Allows manual trigger
+  schedule:
+    - cron: '0 0 * * 0' # Weekly scan
+
+jobs:
+  scala-steward:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Scala Steward
+        uses: scala-steward-org/scala-steward-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-config: '.github/scala-steward.conf'
