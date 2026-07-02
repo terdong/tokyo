@@ -36,7 +36,7 @@ libraryDependencies ++= Seq(
 )
 ```
 
-*Note: This library is experimental and has strict version compatibility requirements. It is compatible with **Scala 3.8.4 and newer** (compiled with Scala 3.8.4). This constraint exists to align with **Kyo 1.0.0-RC2** (which is compiled against Scala 3.8.3). Due to tracking these bleeding-edge releases, older Scala 3 versions are not supported.*
+*Note: This library is experimental and has strict version compatibility requirements. It is compatible with **Scala 3.8.4 and newer** (compiled with Scala 3.8.4). This constraint exists to align with **Kyo 1.0.0-RC2**. Due to tracking these bleeding-edge releases, older Scala 3 versions are not supported.*
 
 ## Usage
 
