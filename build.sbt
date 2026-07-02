@@ -1,14 +1,17 @@
-ThisBuild / version          := "0.1.2"
-ThisBuild / organization     := "com.github.terdong"
-ThisBuild / scalaVersion     := "3.8.4"
+ThisBuild / version := "0.1.2"
+ThisBuild / organization := "com.github.terdong"
+ThisBuild / scalaVersion := "3.8.4"
 
-val kyoVersion = "1.0.0-RC4"
+val kyoVersion = "1.0.0-RC5"
 val munitVersion = "1.3.3"
 
-lazy val root = project.in(file("."))
+lazy val root = project
+  .in(file("."))
   .aggregate(
-    tokyo.jvm, tokyo.js,
-    tokyoTestkit.jvm, tokyoTestkit.js
+    tokyo.jvm,
+    tokyo.js,
+    tokyoTestkit.jvm,
+    tokyoTestkit.js
   )
   .settings(
     name := "tokyo-root",
@@ -20,8 +23,8 @@ lazy val tokyo = crossProject(JSPlatform, JVMPlatform)
   .settings(
     name := "tokyo",
     libraryDependencies ++= Seq(
-      "io.getkyo"          %%% "kyo-core" % kyoVersion,
-      "org.scalameta"      %%% "munit"    % munitVersion % Test
+      "io.getkyo" %%% "kyo-core" % kyoVersion,
+      "org.scalameta" %%% "munit" % munitVersion % Test
     )
   )
 
@@ -31,7 +34,7 @@ lazy val tokyoTestkit = crossProject(JSPlatform, JVMPlatform)
   .settings(
     name := "tokyo-testkit",
     libraryDependencies ++= Seq(
-      "io.getkyo"          %%% "kyo-core" % kyoVersion,
-      "org.scalameta"      %%% "munit"    % munitVersion % Test
+      "io.getkyo" %%% "kyo-core" % kyoVersion,
+      "org.scalameta" %%% "munit" % munitVersion % Test
     )
   )
