@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  workflow_run:
+    workflows: ["Auto-merge"]
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -11,6 +15,11 @@ permissions:
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    # 1. 수동 push일 때 (github.event_name == 'push')
+    # 2. 혹은 workflow_run이 성공했을 때
+    if: |
+      github.event_name == 'push' ||
+      (github.event.workflow_run.conclusion == 'success')
 
     steps:
       - name: Checkout code
