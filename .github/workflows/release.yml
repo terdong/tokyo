@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  # Triggered by the repository_dispatch signal from auto-merge
+  repository_dispatch:
+    types: [trigger-release]
 
 permissions:
   contents: write
@@ -11,13 +14,17 @@ permissions:
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    # Run if pushed directly or triggered by the auto-merge workflow
+    if: github.event_name == 'push' || github.event_action == 'trigger-release'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-           token: ${{ secrets.MY_RELEASE_PAT }}
-           fetch-depth: 2
+          token: ${{ secrets.MY_RELEASE_PAT }}
+          # Ensure we are checking out the latest commit on main
+          ref: 'main'
+          fetch-depth: 2
 
       - name: Check version change
         id: version_check
@@ -44,12 +51,12 @@ jobs:
             echo "version_changed=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         if: steps.version_check.outputs.version_changed == 'true'
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21' # Updated to 21 to match library requirements
           cache: 'sbt'
 
       - name: Set up sbt
