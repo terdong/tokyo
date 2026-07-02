@@ -16,13 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+           token: ${{ secrets.MY_RELEASE_PAT }}
+           fetch-depth: 2
 
       - name: Check version change
         id: version_check
         run: |
           CURRENT_VERSION=$(grep -E 'ThisBuild\s*/\s*version\s*:=\s*".*"' build.sbt | sed -E 's/.*version\s*:=\s*"([^"]*)".*/\1/')
-          
+
           if git rev-parse HEAD~1 >/dev/null 2>&1; then
             if git show HEAD~1:build.sbt >/dev/null 2>&1; then
               PREV_VERSION=$(git show HEAD~1:build.sbt | grep -E 'ThisBuild\s*/\s*version\s*:=\s*".*"' | sed -E 's/.*version\s*:=\s*"([^"]*)".*/\1/')
@@ -32,10 +33,10 @@ jobs:
           else
             PREV_VERSION="none"
           fi
-          
+
           echo "Current version: $CURRENT_VERSION"
           echo "Previous version: $PREV_VERSION"
-          
+
           if [ "$CURRENT_VERSION" != "$PREV_VERSION" ]; then
             echo "version_changed=true" >> $GITHUB_OUTPUT
             echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
