@@ -25,14 +25,14 @@ Then, add the library dependency to your `build.sbt`:
 ```scala
 // For JVM-only projects
 libraryDependencies ++= Seq(
-  "com.github.terdong.tokyo" %% "tokyo" % "0.1.5",
-  "com.github.terdong.tokyo" %% "tokyo-testkit" % "0.1.5" % Test
+  "com.github.terdong.tokyo" %% "tokyo" % "0.1.6",
+  "com.github.terdong.tokyo" %% "tokyo-testkit" % "0.1.6" % Test
 )
 
 // For Scala.js or cross-platform/shared projects
 libraryDependencies ++= Seq(
-  "com.github.terdong.tokyo" %%% "tokyo" % "0.1.5",
-  "com.github.terdong.tokyo" %%% "tokyo-testkit" % "0.1.5" % Test
+  "com.github.terdong.tokyo" %%% "tokyo" % "0.1.6",
+  "com.github.terdong.tokyo" %%% "tokyo-testkit" % "0.1.6" % Test
 )
 ```
 
