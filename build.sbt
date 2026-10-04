@@ -2,7 +2,7 @@ ThisBuild / version := "0.1.6"
 ThisBuild / organization := "com.github.terdong"
 ThisBuild / scalaVersion := "3.8.4"
 
-val kyoVersion = "1.0.0-RC6"
+val kyoVersion = "1.0.0-RC7"
 val munitVersion = "1.3.3"
 
 lazy val root = project
